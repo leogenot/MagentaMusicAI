@@ -234,7 +234,7 @@ function playPattern(pattern) {
     );
 
 
-    Tone.context.resume();
+    //Tone.context.resume();
     Tone.Transport.start();
 
 
@@ -242,8 +242,8 @@ function playPattern(pattern) {
     /*if (sequence.isPlaying()) {
         sequence.stop();
         return;
-    };*/
-    sequence.start();
+    };
+    sequence.start();*/
 
     // Lancement de la séquence si on l'a arrêtée avec le bouton stop
     var btnPlay = document.getElementById('buttonPlay');
