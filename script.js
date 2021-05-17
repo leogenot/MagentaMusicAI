@@ -126,6 +126,8 @@ var seedPattern3 = [
 
 
 
+let reverb = new Tone.Convolver(`assets/small-drum-room.wav`).toMaster();
+reverb.wet.value = 0;
 
 //SOUNDS
 let drumKit = [
@@ -202,7 +204,7 @@ function buttonPress(e) {
 }
 
 // Lecture du pattern choisi
-function isPlaying(audio) { return !audio.paused; }
+
 function playPattern(pattern) {
     //console.log("bpm: "+bpm);
     switch (seedPat) {
@@ -232,39 +234,30 @@ function playPattern(pattern) {
     );
 
 
+    Tone.context.resume();
     Tone.Transport.start();
 
 
-
-    
-
-
-    //sequence.start();
+    // Si une séquence est déjà lancée, on la stoppe avant d'en lancer une autre
+    /*if (sequence.isPlaying()) {
+        sequence.stop();
+        return;
+    };*/
+    sequence.start();
 
     // Lancement de la séquence si on l'a arrêtée avec le bouton stop
     var btnPlay = document.getElementById('buttonPlay');
     btnPlay.addEventListener("click", function startSeq() {
-        // Si une séquence est déjà lancée, on la stoppe avant d'en lancer une autre
-        if (isPlaying(sequence)) {
-            sequence.start();
-        } else {
-            console.log("on stoppe ca lit deja ")
-            sequence.stop();
-        }
+        console.log("Seq start");
+        sequence.start();
     })
 
     // Stopper la séquence avec le bouton stop
     var btnStop = document.getElementById('buttonStop');
     btnStop.addEventListener("click", function stopSeq() {
-        // Si une séquence est déjà lancée, on la stoppe avant d'en lancer une autre
-        if (isPlaying(sequence)) {
-            console.log("stop playing")
-            sequence.stop();
-        } else {
-            console.log("is playing")
-            sequence.start();
-        }
-    })
+        console.log("Seq stop");
+        sequence.stop();
+    });
 }
 
 // Affichage du pattern de la séquence choisie
@@ -295,12 +288,9 @@ function displayPattern(patterns) {
 function createAndPlayPattern(seedPat) {
 
     let seedSeq = toNoteSequence(seedPat);
-    
     drumRnn
         .continueSequence(seedSeq, patternLength, temperature)
         .then(r => seedPat.concat(fromNoteSequence(r, patternLength)))
         .then(displayPattern)
         .then(playPattern)
 }
-
-
