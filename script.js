@@ -126,8 +126,6 @@ var seedPattern3 = [
 
 
 
-let reverb = new Tone.Convolver(`assets/small-drum-room.wav`).toMaster();
-reverb.wet.value = 0;
 
 //SOUNDS
 let drumKit = [
